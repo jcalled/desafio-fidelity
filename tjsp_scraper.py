@@ -1,0 +1,43 @@
+
+from selenium.webdriver.support.select import Select
+from selenium.webdriver.chrome.service import Service
+from selenium import webdriver
+from selenium.webdriver.edge.options import Options
+
+from config import CHROMEDRIVER_PATH
+import time
+
+
+class TJSPScraper:
+
+    def carregaSite(self):
+        service = Service(CHROMEDRIVER_PATH)
+        options = Options()
+        options.add_argument("-headless")
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        browser = webdriver.Edge(service=service, options=options)
+        browser.get("https://esaj.tjsp.jus.br/cpopg/open.do")
+
+        if (filtro == 0 or filtro == 1 or filtro == 3):
+            try:
+                select_el = browser.find_element('xpath','//*[@id="cbPesquisa"]')
+                select_ob = Select(select_el)
+                select_ob.select_by_value('DOCPARTE')
+                browser.find_element('xpath','//*[@id="campo_DOCPARTE"]').send_keys(documento)
+                browser.find_element('xpath','//*[@id="botaoConsultarProcessos"]').click()
+            except:
+                time.sleep(120)
+                self.restarta_programa(self)
+        elif (filtro == 2):
+            try:
+                select_el = browser.find_element('xpath','//*[@id="cbPesquisa"]')
+                select_ob = Select(select_el)
+                select_ob.select_by_value('NMPARTE')
+                browser.find_element('xpath','//*[@id="pesquisarPorNomeCompleto"]').click()
+                browser.find_element('xpath','//*[@id="campo_NMPARTE"]').send_keys(documento)
+                browser.find_element('xpath','//*[@id="botaoConsultarProcessos"]').click()
+            except:
+                time.sleep(120)
+                self.restarta_programa(self)
+        return browser.page_source
+        
