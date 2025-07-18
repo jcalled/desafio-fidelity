@@ -1,30 +1,40 @@
 
 from selenium.webdriver.support.select import Select
-from selenium.webdriver.chrome.service import Service
-from selenium import webdriver
-from selenium.webdriver.edge.options import Options
 
-# from config import CHROMEDRIVER_PATH
+# from selenium.webdriver.edge.service import Service
+# from selenium.webdriver.edge.options import Options
+# from selenium.webdriver import Edge
+
+from selenium.webdriver.chrome.service import Service
+
+# Chrome
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver import Chrome as WebDriver
+from selenium.webdriver import Chrome
+
 import time
 import sys
 import os
 
-from core.restarter import Restarter
+# from core.restarter import Restarter
 
 
 class TJSPScraper:
 
-    def __init__(self):
-        self.restarter = Restarter()
+    # def __init__(self):
+    #     self.restarter = Restarter()
 
-    def carregaSite(self):
-        chromedriver = '/opt/homebrew/bin/chromedriver' #if sys.platform == 'darwin' else ''
+    def carregaSite(self, filtro, documento):
+        CHROMEDRIVER_PATH = '/opt/homebrew/bin/chromedriver' #if sys.platform == 'darwin' else ''
         service = Service(CHROMEDRIVER_PATH)
         options = Options()
-        options.add_argument("-headless")
+        # options.add_argument("-headless")
         options.add_experimental_option('excludeSwitches', ['enable-logging'])
-        browser = webdriver.Edge(service=service, options=options)
-        browser.get("https://esaj.tjsp.jus.br/cpopg/open.do")
+        
+        # browser = webdriver.Edge(service=service, options=options) # Edge
+
+        browser = Chrome(service=service, options=options)
+        browser.get("https://esaj.tjce.jus.br/cpopg/open.do")
 
         if (filtro == 0 or filtro == 1 or filtro == 3):
             try:

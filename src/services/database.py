@@ -42,6 +42,7 @@ class Database:
             WHERE p.Data_Conclusao IS NULL AND ps.resultado IS NULL
               AND p.tipo = 0 AND p.cpf <> '' {filtro_condicao}
               AND (e.UF = 'SP' OR p.Cod_UF_Nascimento = 26 OR p.Cod_UF_RG = 26)
+              
             GROUP BY p.cod_pesquisa,
                 p.Cod_Cliente,
                 p.Cod_Pesquisa,
@@ -73,10 +74,11 @@ class Database:
             INSERT INTO pesquisa_spv
                 (cod_pesquisa, cod_spv, cod_spv_computador, cod_spv_tipo, resultado, cod_funcionario, filtro, website_id)
             VALUES 
-                (?, 1, 36, NULL, ?, -1, ?, 1)
+                (%s, 1, 36, NULL, %s, -1, %s, 1)
+            ON CONFLICT  (cod_pesquisa) DO NOTHING
         """
 
         cursor = self.connection.cursor()
-        cursor.execute(sql, (cod_pesquisa, resultado, filtro))
+        cursor.execute(sql, [cod_pesquisa, resultado, filtro])
         self.connection.commit()
         cursor.close

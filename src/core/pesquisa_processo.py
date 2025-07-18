@@ -20,17 +20,14 @@ class PesquisaProcesso:
 
         while(i <= 3):
             pesquisas = self.database.pesquisar(i)
-            # print('pesquisas')
-            # print(pesquisas)
+        
             if not pesquisas:
                 print("Nenhuma pesquisa encontrada. Reiniciando em 30 segundos")
                 time.sleep(30)
                 self.restarter.restart() # Método para reiniciar
                 return
-
-            # print(pesquisas )
+ 
             inicio = datetime.datetime.now()
-            # print(inicio)
 
             for data in tqdm(pesquisas):
                 cod_pesquisa, nome, cpf, rg, spv_tipo = data[1], data[4], data[5], data[6], data[11]
@@ -51,8 +48,8 @@ class PesquisaProcesso:
         documento = cpf if filtro == 0 else rg if filtro in [1, 3] else nome
         if not documento:
             return
-
-        html = self.scraper.carregar(filtro, documento)
+        html = self.scraper.carregaSite(filtro, documento)
         resultado = self.checar_resultado.checar(html)
+        print('resultado')
         print(resultado)
-        # self.database.salvar_resultado(cod_pesquisa, resultado, filtro)
+        self.database.inserir_pesquisa(cod_pesquisa, resultado, filtro)

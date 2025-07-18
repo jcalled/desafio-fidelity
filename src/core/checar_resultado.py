@@ -7,3 +7,10 @@ class ChecarResultado:
                 return 2
             return 5
         return 7
+
+# Codigos:
+# 1 = Não existe informações disponíveis 
+# 2 = Encontrou processo ou Audiências criminais
+# 5 = Encontrou processo ou Audiêna Civeis
+# 7 = Outros
+
