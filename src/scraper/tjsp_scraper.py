@@ -4,13 +4,21 @@ from selenium.webdriver.chrome.service import Service
 from selenium import webdriver
 from selenium.webdriver.edge.options import Options
 
-from config import CHROMEDRIVER_PATH
+# from config import CHROMEDRIVER_PATH
 import time
+import sys
+import os
+
+from core.restarter import Restarter
 
 
 class TJSPScraper:
 
+    def __init__(self):
+        self.restarter = Restarter()
+
     def carregaSite(self):
+        chromedriver = '/opt/homebrew/bin/chromedriver' #if sys.platform == 'darwin' else ''
         service = Service(CHROMEDRIVER_PATH)
         options = Options()
         options.add_argument("-headless")
@@ -40,4 +48,3 @@ class TJSPScraper:
                 time.sleep(120)
                 self.restarta_programa(self)
         return browser.page_source
-        
