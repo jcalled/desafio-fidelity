@@ -52,8 +52,16 @@ class PesquisaProcesso:
         self.restarter.restart()
 
 
+
     
     def _executar_pesquisa(self, filtro, nome, cpf, rg, cod_pesquisa, spv_tipo):
+
+
+        # Verificar se ja esta cadastrado. Já pesquidado? pula
+        if self.database.existe_pesquisa_spv(cod_pesquisa):
+            print(f"Pesquisa {cod_pesquisa} já realizado. Pulando...")
+            return
+
         documento = cpf if filtro == 0 else rg if filtro in [1, 3] else nome
         if not documento:
             return

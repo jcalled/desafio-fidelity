@@ -82,3 +82,11 @@ class Database:
         cursor.execute(sql, [cod_pesquisa, resultado, filtro])
         self.connection.commit()
         cursor.close
+
+    def existe_pesquisa_spv(self, cod_pesquisa: int) -> bool:
+        with self.connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT 1 FROM pesquisa_spv WHERE cod_pesquisa = %s LIMIT 1", 
+                [cod_pesquisa]
+            )
+            return cursor.fetchone() is not None
