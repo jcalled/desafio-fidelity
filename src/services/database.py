@@ -1,15 +1,19 @@
+import os
 import psycopg2
-from services.config import DB_HOST, DB_USER, DB_PORT, DB_PASSWORD, DB_NAME
+# from services.config import DB_HOST, DB_USER, DB_PORT, DB_PASSWORD, DB_NAME
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class Database:
 
     # Construtor para conexão ao banco
     def __init__(self):
         self.connection = psycopg2.connect(
-            host=DB_HOST,
-            user=DB_USER,
-            password=DB_PASSWORD,
-            dbname=DB_NAME
+            host=os.getenv('DB_HOST'),
+            user=os.getenv('DB_USER'),
+            password=os.getenv('DB_PASSWORD'),
+            dbname=os.getenv('DB_NAME')
         )
 
     def pesquisar(self, filtro):

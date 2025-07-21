@@ -1,16 +1,15 @@
 
 from selenium.webdriver.support.select import Select
 
+# Edge
 from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.edge.options import Options as EdgeOptions
-# from selenium.webdriver import Edge
-
+from selenium.webdriver import Edge as EdgeWebDriver
 
 # Chrome
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options as ChromeOptions
-from selenium.webdriver import Chrome as WebDriver
-from selenium.webdriver import Chrome
+from selenium.webdriver import Chrome as ChromeWebDriver
 
 import time
 import sys
@@ -22,6 +21,8 @@ from dotenv import load_dotenv
 
 # Adicionando interface
 from interfaces.scraper_interface import ScraperInterface
+
+load_dotenv()
 
 class TJSPScraper(ScraperInterface):
 
@@ -37,21 +38,24 @@ class TJSPScraper(ScraperInterface):
         #     service = ChromeService(executable_path=DRIVER_PATH)
         #     options = ChromeOptions()
 
+
+
         if os.getenv("BROWSER") == "edge":
+            EXECUTAVEL='C:/Users/teste/OneDrive/Documentos/'
             service = EdgeService(executable_path=EXECUTAVEL+"msedgedriver.exe")
             options = EdgeOptions()
+            options.add_argument("-headless")
+            options.add_experimental_option('excludeSwitches', ['enable-logging'])
+            browser = EdgeWebDriver.Edge(service=service, options=options) # Edge
         else:
-            CHROMEDRIVER_PATH = '/opt/homebrew/bin/chromedriver' #if sys.platform == 'darwin' else ''
+            CHROMEDRIVER_PATH = '/opt/homebrew/bin/chromedriver'
             service = ChromeService(CHROMEDRIVER_PATH)
             options = ChromeOptions()
+            options.add_argument("-headless")
+            options.add_experimental_option('excludeSwitches', ['enable-logging'])
+            browser = ChromeWebDriver(service=service, options=options)
         
-        options.add_argument("-headless")
-        options.add_experimental_option('excludeSwitches', ['enable-logging'])
-        
-        # browser = webdriver.Edge(service=service, options=options) # Edge
-
-        browser = Chrome(service=service, options=options)
-        browser.get("https://esaj.tjce.jus.br/cpopg/open.do")
+        browser.get("https://esaj.tjsp.jus.br/cpopg/open.do")
 
         if (filtro == 0 or filtro == 1 or filtro == 3):
             try:
