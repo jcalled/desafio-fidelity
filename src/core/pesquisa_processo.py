@@ -5,15 +5,24 @@ from core.checar_resultado import ChecarResultado
 from services.database import Database
 from scraper.tjsp_scraper import TJSPScraper
 
+
+SCRAPERS = {
+    "TJSP": TJSPScraper()
+}
+
 class PesquisaProcesso:
-    def __init__(self, filtro=0):
+    def __init__(self, filtro=0, scraper_name='TJSP'):
         self.filtro = filtro
         self.database = Database()
-        self.scraper = TJSPScraper()
+        self.scraper = self.get_scraper(scraper_name) 
         self.checar_resultado = ChecarResultado()
         self.restarter = Restarter()
         
-    
+    # Metodo para pegar qualquer outro scraper
+    @staticmethod
+    def get_scraper(nome: str):
+        return SCRAPERS.get(nome)
+
     # Método para consultar no banco de dados 
     def pesquisar(self):
         i = self.filtro

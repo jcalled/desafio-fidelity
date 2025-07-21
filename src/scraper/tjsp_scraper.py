@@ -18,8 +18,10 @@ import os
 
 # from core.restarter import Restarter
 
+# Adicionando interface
+from interfaces.scraper_interface import ScraperInterface
 
-class TJSPScraper:
+class TJSPScraper(ScraperInterface):
 
     # def __init__(self):
     #     self.restarter = Restarter()
