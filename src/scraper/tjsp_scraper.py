@@ -1,20 +1,22 @@
 
 from selenium.webdriver.support.select import Select
 
-# from selenium.webdriver.edge.service import Service
-# from selenium.webdriver.edge.options import Options
+from selenium.webdriver.edge.service import Service as EdgeService
+from selenium.webdriver.edge.options import Options as EdgeOptions
 # from selenium.webdriver import Edge
 
-from selenium.webdriver.chrome.service import Service
 
 # Chrome
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver import Chrome as WebDriver
 from selenium.webdriver import Chrome
 
 import time
 import sys
 import os
+
+from dotenv import load_dotenv
 
 # from core.restarter import Restarter
 
@@ -27,10 +29,23 @@ class TJSPScraper(ScraperInterface):
     #     self.restarter = Restarter()
 
     def carregaSite(self, filtro, documento):
-        CHROMEDRIVER_PATH = '/opt/homebrew/bin/chromedriver' #if sys.platform == 'darwin' else ''
-        service = Service(CHROMEDRIVER_PATH)
-        options = Options()
-        # options.add_argument("-headless")
+
+        # if BROWSER == "edge":
+        #     service = EdgeService(executable_path=DRIVER_PATH)
+        #     options = EdgeOptions()
+        # else:
+        #     service = ChromeService(executable_path=DRIVER_PATH)
+        #     options = ChromeOptions()
+
+        if os.getenv("BROWSER") == "edge":
+            service = EdgeService(executable_path=EXECUTAVEL+"msedgedriver.exe")
+            options = EdgeOptions()
+        else:
+            CHROMEDRIVER_PATH = '/opt/homebrew/bin/chromedriver' #if sys.platform == 'darwin' else ''
+            service = ChromeService(CHROMEDRIVER_PATH)
+            options = ChromeOptions()
+        
+        options.add_argument("-headless")
         options.add_experimental_option('excludeSwitches', ['enable-logging'])
         
         # browser = webdriver.Edge(service=service, options=options) # Edge
